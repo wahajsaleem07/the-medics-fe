@@ -1,0 +1,107 @@
+//@import 'abstracts/variables';
+
+.toolbar {
+    background-color: white;
+    border-bottom: 1px solid #e0e0e0;
+    padding: 12px;
+
+    & > img {
+        max-height: 100%;
+        max-width: 100%;
+        border-radius: 50%;
+    }
+
+    & > .fill-remaining-space {
+        flex: 1 1 auto;
+    }
+
+    .username-section > * {
+        margin-right: 8px;
+    }
+
+    & > .user-profile-menu img {
+        height: 100%;
+        width: 100%;
+        border-radius: 50%;
+    }
+}
+
+.switch-menu-title {
+    padding: 8px 16px;
+    width: 200px;
+}
+
+.usermenu-details {
+    display: flex;
+    padding: 8px 16px;
+
+    & > img {
+        border-radius: 50%;
+    }
+
+    & > div {
+        margin: 12px;
+    }
+}
+
+.usermenu-actions {
+    margin-top: 8px;
+    margin-right: 8px;
+    text-align: end;
+    button {
+        margin-left: auto;
+    }
+}
+
+.menu-sidenav-container {
+    height: calc(100% - 64px);
+
+    mat-sidenav {
+        width: 360px;
+        background-color: #eeeeee;
+
+        .student-program {
+            background-color: #607D8B;
+            border-radius: 4px;
+            margin: 16px 8px 0;
+            padding: 8px;
+
+            & > div {
+                height: 24px;
+                line-height: 24px;
+            }
+
+            .student-program-details {
+                display: flex;
+
+                & > mat-divider {
+                    margin: auto 8px;
+                    border-color: #ECEFF1;
+                    height: 12px;
+                }
+            }
+        }
+
+        .student-program-more {
+            display: flex;
+            justify-content: space-between;
+            margin: 0 12px;
+        }
+
+        mat-list-item.active {
+            color: #0091ea;
+            background-color: white;
+
+            .app-text {
+                color: #0091ea;
+                font-weight: bold;
+            }
+        }
+    }
+}
+
+:host ::ng-deep .ellipsis {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}

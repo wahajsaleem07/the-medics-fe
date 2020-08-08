@@ -1,0 +1,195 @@
+<div layout="row" class="sub-header">
+    <div>Inventory</div>
+    <div style="margin-left: 8px">
+        <button *ngIf="!editMode" mat-mini-fab color="primary" aria-label="" (click)="addMode = true;">
+            <mat-icon>add</mat-icon>
+        </button>
+    </div>
+</div>
+
+<div *ngIf="addMode || editMode" class="row-margins">
+    <form [formGroup]="inventoryForm" (ngSubmit)="onSubmit()" class="">
+        
+        <div style="width: 100%; height: 56px">
+            <div class="row-item">
+                <mat-form-field class="example-full-width field-gutters">
+                    <input type="text"
+                           placeholder="Product"
+                           matInput
+                           formControlName="productId"
+                           [matAutocomplete]="auto" required>
+                        <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+                            <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+                                {{option.name}} <span *ngIf="option.dosage"> - {{option.dosage}}</span>
+                            </mat-option>
+                    </mat-autocomplete>
+                  </mat-form-field>
+                <div *ngIf="submitted && f.productId.errors" class="invalid-feedback">
+                    <div *ngIf="f.name.errors.required">Product is required</div>
+                </div>
+            </div>
+
+            <div class="row-item">
+                <mat-form-field class="example-full-width field-gutters">
+                    <mat-label>Supplier</mat-label>
+                    <mat-select [(value)]="supplierValue" formControlName="supplierId" required>
+                        <mat-option *ngFor="let item of supplierList" [value]="item._id">
+                            {{item.name}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <div *ngIf="submitted && f.supplierId.errors" class="invalid-feedback">
+                    <div *ngIf="f.supplierId.errors.required">Supplier is required</div>
+                </div>
+            </div>
+
+            <div class="row-item" style="width: 38%">
+                <mat-form-field class="example-full-width field-gutters">
+                    <mat-label>Batch Number</mat-label>
+                    <input matInput formControlName="batchNumber" required>
+                </mat-form-field>
+                <div *ngIf="submitted && f.batchNumber.errors" class="invalid-feedback">
+                    <div *ngIf="f.batchNumber.errors.required">Retail Price is required</div>
+                </div>
+            </div>
+        </div>
+
+        <div style="width: 100%; margin-top: 24px; height: 56px; padding-bottom: 24px">
+            <div class="row-item" style="width: 33%">
+                <mat-form-field class="example-full-width field-gutters">
+                    <mat-label>Retail Price</mat-label>
+                    <input matInput formControlName="retailPrice" required>
+                </mat-form-field>
+                <div *ngIf="submitted && f.retailPrice.errors" class="invalid-feedback">
+                    <div *ngIf="f.retailPrice.errors.required">Sale Price is required</div>
+                </div>
+            </div>
+
+            <div class="row-item" style="width: 33%">
+                <mat-form-field class="example-full-width field-gutters">
+                    <mat-label>Sale Price</mat-label>
+                    <input matInput formControlName="salePrice">
+                </mat-form-field>
+                <div *ngIf="submitted && f.salePrice.errors" class="invalid-feedback">
+                    <div *ngIf="f.salePrice.errors.required">Sale Price is required</div>
+                </div>
+            </div>
+
+            <div class="row-item" style="width: 33%">
+                <mat-form-field class="example-full-width field-gutters">
+                    <mat-label>Total Units</mat-label>
+                    <input matInput formControlName="totalUnits" required>
+                </mat-form-field>
+                <div *ngIf="submitted && f.totalUnits.errors" class="invalid-feedback">
+                    <div *ngIf="f.totalUnits.errors.required">Total Units are required</div>
+                </div>
+            </div>
+        </div>
+
+        <div style="width: 100%; margin-top: 24px; height: 56px; padding-bottom: 24px">
+            <div class="row-item" style="width: 33%">
+                <mat-form-field class="example-full-width field-gutters">
+                    <mat-label>Sold Units</mat-label>
+                    <input matInput formControlName="soldUnits" required>
+                </mat-form-field>
+                <div *ngIf="submitted && f.soldUnits.errors" class="invalid-feedback">
+                    <div *ngIf="f.soldUnits.errors.required">Sold Units are required</div>
+                </div>
+            </div>
+
+            <div class="row-item" style="width: 33%">
+                <mat-form-field class="example-full-width" >
+                    <mat-label>Manufacture date</mat-label>
+                    <input matInput required formControlName="manufacturerDate" [matDatepicker]="picker">
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                  </mat-form-field>
+                <div *ngIf="submitted && f.manufacturerDate.errors" class="invalid-feedback">
+                    <div *ngIf="f.manufacturerDate.errors.required">Manufacture Date is required</div>
+                </div>
+            </div>
+
+            <div class="row-item" style="width: 33%">
+                <mat-form-field class="example-full-width" >
+                    <mat-label>Expire Date</mat-label>
+                    <input matInput required formControlName="expireDate" [matDatepicker]="picker2">
+                    <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                    <mat-datepicker #picker2></mat-datepicker>
+                  </mat-form-field>
+                <div *ngIf="submitted && f.expireDate.errors" class="invalid-feedback">
+                    <div *ngIf="f.expireDate.errors.required">Expire Date is required</div>
+                </div>
+            </div>
+        </div>
+
+        <div style="width: 100%; margin-top: 24px; height: 56px; padding-bottom: 24px">
+            <div class="row-item">
+                <mat-slide-toggle [checked]="itemStatus" formControlName="status" color="primary"
+                    style="margin-top: 12px; margin-left: 8px">
+                    Status
+                </mat-slide-toggle>
+            </div>
+        </div>
+
+        <mat-divider></mat-divider>
+
+        <div class="row-action-form" style="margin-top: 24px">
+            <button *ngIf="addMode" mat-button class="save" aria-label="Save product" style="float: left">
+                <mat-icon>save</mat-icon>
+                SAVE
+            </button>
+
+            <button type="button" *ngIf="editMode" mat-button class="save" aria-label="Edit product" (click)="updateProduct()" style="float: left">
+                <mat-icon>save</mat-icon>
+                Update
+            </button>
+
+            <button mat-button class="remove" aria-label="Remove product origin"
+                (click)="productForm.clear; addMode = false; editMode = false" style="float: left">
+                <mat-icon>delete</mat-icon>
+                Cancel
+            </button>
+        </div>
+    </form>
+</div>
+
+<div *ngIf="!addMode && !editMode" class="row-margins">
+    <div *ngFor="let item of items; let i = index;" class="row-list" style="font-size: 14px; height: 35px">
+        <div class="col-3 margin-top-4" style="color: #673ab7; font-weight: 500">
+            <div style="width: 100%">
+                {{item.productName}}
+                <span *ngIf="item.batchNumber" style="font-size: 12px; color: #9e9e9e"> - {{item.batchNumber}}</span>    
+            </div>
+            <div style="width: 100%">
+                <span style="font-size: 12px; color: #9e9e9e"> {{item.supplierName}}</span>    
+            </div>
+        </div>
+
+        <div class="col-2 margin-top-12">
+            {{item.expireDate | date: 'longDate'}}
+        </div>
+
+        <div class="col-2 margin-top-12">
+            Rs. {{item.salePrice}} 
+        </div>
+
+        <div class="col-2 margin-top-12">
+            {{item.soldUnits}}/{{item.totalUnits}} 
+        </div>
+
+        <div class="col-2 margin-top-12" [ngClass]="{ 'save': item.status == true, 'remove': item.status == false }">
+            {{item.status ? 'Active' : 'Inactive' }} 
+        </div>
+
+        <div class="row-action" style="padding-top: 0; margin-top: -3px">
+            <button mat-icon-button class="edit" aria-label="Edit product">
+                <mat-icon>edit</mat-icon>
+            </button>
+
+            <button mat-icon-button class="remove" aria-label="Remove product"
+                (click)="deleteItem(item._id)">
+                <mat-icon>delete</mat-icon>
+            </button>
+        </div>
+    </div>
+</div>

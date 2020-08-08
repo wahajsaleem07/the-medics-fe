@@ -1,0 +1,171 @@
+<div layout="row" class="sub-header">
+    <div>Product</div>
+    <div style="margin-left: 8px">
+        <button *ngIf="!editMode" mat-mini-fab color="primary" aria-label="" (click)="addMode = true;">
+            <mat-icon>add</mat-icon>
+        </button>
+    </div>
+</div>
+
+<div *ngIf="addMode || editMode" class="row-margins">
+    <form [formGroup]="productForm" (ngSubmit)="onSubmit()" class="">
+        <div style="width: 100%; height: 56px">
+            <div class="row-item">
+                <mat-form-field class="example-full-width field-gutters">
+                    <mat-label>Name</mat-label>
+                    <input matInput formControlName="name" required
+                        [ngClass]="{ 'is-invalid': submitted && f.name.errors }">
+                </mat-form-field>
+                <div *ngIf="submitted && f.name.errors" class="invalid-feedback">
+                    <div *ngIf="f.name.errors.required">Name is required</div>
+                </div>
+            </div>
+
+            <div class="row-item">
+                <mat-form-field class="example-full-width field-gutters">
+                    <mat-label>Code</mat-label>
+                    <input matInput formControlName="code" required
+                        [ngClass]="{'is-invalid': submitted && f.code.errors }">
+                </mat-form-field>
+                <div *ngIf="submitted && f.code.errors" class="invalid-feedback">
+                    <div *ngIf="f.code.errors.required">Code is required</div>
+                </div>
+            </div>
+
+            <div class="row-item" style="width: 38%">
+                <mat-form-field class="example-full-width field-gutters">
+                    <mat-label>Dosage</mat-label>
+                    <input matInput formControlName="dosage">
+                </mat-form-field>
+            </div>
+        </div>
+
+        <div style="width: 100%; margin-top: 24px; height: 56px; padding-bottom: 24px">
+            <div class="row-item">
+                <mat-form-field class="example-full-width field-gutters">
+                    <mat-label>Product Category</mat-label>
+                    <mat-select [(value)]="productCategoryValue" formControlName="productCategory" required>
+                        <mat-option *ngFor="let item of productCategoryList" [value]="item._id">
+                            {{item.name}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <div *ngIf="submitted && f.productCategory.errors" class="invalid-feedback">
+                    <div *ngIf="f.productCategory.errors.required">Product Category is required</div>
+                </div>
+            </div>
+
+            <div class="row-item">
+                <mat-form-field class="example-full-width field-gutters">
+                    <mat-label>Product Origin</mat-label>
+                    <mat-select [(value)]="productOriginValue" formControlName="productOrigin" required>
+                        <mat-option *ngFor="let item of productOriginList" [value]="item._id">
+                            {{item.name}}
+                        </mat-option>
+                    </mat-select>
+                    <div *ngIf="submitted && f.productOrigin.errors" class="invalid-feedback">
+                        <div *ngIf="f.productOrigin.errors.required">Product Origin is required</div>
+                    </div>
+                </mat-form-field>
+            </div>
+
+            <div class="row-item">
+                <mat-form-field  class="example-full-width field-gutters">
+                    <mat-label>Product Type</mat-label>
+                    <mat-select [(value)]="productTypeValue" formControlName="productType" required>
+                        <mat-option *ngFor="let item of productTypeList" [value]="item._id">
+                            {{item.name}}
+                        </mat-option>
+                    </mat-select>
+                    <div *ngIf="submitted && f.productType.errors" class="invalid-feedback">
+                        <div *ngIf="f.productType.errors.required">Product Type is required</div>
+                    </div>
+                </mat-form-field>
+            </div>
+        </div>
+
+        <div style="width: 100%; margin-top: 24px; height: 56px; padding-bottom: 24px">
+            <div class="row-item">
+                <mat-form-field class="example-full-width field-gutters">
+                    <mat-label>Brand</mat-label>
+                    <mat-select [(value)]="brandValue" formControlName="brandId" required>
+                        <mat-option *ngFor="let item of brandList" [value]="item._id">
+                            {{item.name}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <div *ngIf="submitted && f.brandId.errors" class="invalid-feedback">
+                    <div *ngIf="f.brandId.errors.required">Brand is required</div>
+                </div>
+            </div>
+
+            <div class="row-item">
+                <mat-slide-toggle [checked]="itemStatus" formControlName="narcoFlag" color="primary"
+                    style="margin-top: 12px; margin-left: 8px">
+                    Narcotic
+                </mat-slide-toggle>
+            </div>
+        </div>
+
+        <mat-divider></mat-divider>
+
+        <div class="row-action-form" style="margin-top: 24px">
+            <button *ngIf="addMode" mat-button class="save" aria-label="Save product" style="float: left">
+                <mat-icon>save</mat-icon>
+                SAVE
+            </button>
+
+            <button type="button" *ngIf="editMode" mat-button class="save" aria-label="Edit product" (click)="updateProduct()" style="float: left">
+                <mat-icon>save</mat-icon>
+                Update
+            </button>
+
+            <button mat-button class="remove" aria-label="Remove product origin"
+                (click)="productForm.clear; addMode = false; editMode = false" style="float: left">
+                <mat-icon>delete</mat-icon>
+                Cancel
+            </button>
+        </div>
+    </form>
+</div>
+
+<div *ngIf="!addMode && !editMode" class="row-margins">
+    <div *ngFor="let item of items; let i = index;" class="row-list" style="font-size: 14px; height: 35px">
+        <div class="col-3 margin-top-4" style="color: #673ab7; font-weight: 500">
+            <div style="width: 100%">
+                {{item.name}}
+                <span *ngIf="item.dosage" style="font-size: 10px; color: #9e9e9e"> - {{item.dosage}}</span>    
+            </div>
+            <div style="width: 100%">
+                <span style="font-size: 12px; color: #9e9e9e"> {{item.brand}}</span>    
+            </div>
+        </div>
+
+        <div class="col-2 margin-top-12">
+            {{item.productOrigin}}
+        </div>
+
+        <div class="col-2 margin-top-12">
+            {{item.productType}} 
+        </div>
+
+        <div class="col-2 margin-top-12">
+            {{item.productCategory}} 
+        </div>
+
+        <div class="col-2 margin-top-12" [ngClass]="{ 'save': item.narco_flag == true, 'remove': item.narco_flag == false }">
+            {{item.narcoFlag ? 'Narcotic' : 'Not Narcotic' }} 
+        </div>
+
+        <div class="row-action" style="padding-top: 0; margin-top: -3px">
+            <button mat-icon-button class="edit" aria-label="Edit product" (click)="editItem(item._id, i)">
+                <mat-icon>edit</mat-icon>
+            </button>
+
+            <button mat-icon-button class="remove" aria-label="Remove product"
+                (click)="deleteItem(item._id)">
+                <mat-icon>delete</mat-icon>
+            </button>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,80 @@
+<div layout="row" class="sub-header">
+    <div>Product Type</div>
+    <div style="margin-left: 8px">
+        <button mat-mini-fab color="primary" aria-label="Example icon button with a delete icon"
+            (click)="addMode = true">
+            <mat-icon>add</mat-icon>
+        </button>
+    </div>
+</div>
+
+<div *ngIf="addMode" class="row-margins">
+    <form [formGroup]="productTypeForm" (ngSubmit)="onSubmit()" class="">
+        <div class="row-item">
+            <mat-form-field class="example-full-width field-gutters">
+                <mat-label>Name</mat-label>
+                <input matInput formControlName="name" required
+                    [ngClass]="{ 'is-invalid': submitted && f.name.errors }">
+            </mat-form-field>
+            <div *ngIf="submitted && f.name.errors" class="invalid-feedback">
+                <div *ngIf="f.name.errors.required">Name is required</div>
+            </div>
+        </div>
+
+        <div class="row-item">
+            <mat-form-field class="example-full-width field-gutters">
+                <mat-label>Code</mat-label>
+                <input matInput formControlName="code" required
+                    [ngClass]="{'is-invalid': submitted && f.code.errors }">
+            </mat-form-field>
+            <div *ngIf="submitted && f.code.errors" class="invalid-feedback">
+                <div *ngIf="f.code.errors.required">Code is required</div>
+            </div>
+        </div>
+
+        <div class="row-item">
+            <mat-form-field class="example-full-width field-gutters">
+                <mat-label>Description</mat-label>
+                <textarea matInput formControlName="description"></textarea>
+            </mat-form-field>
+        </div>
+
+        <div class="row-action">
+            <button mat-icon-button class="save" aria-label="Save product type">
+                <mat-icon>save</mat-icon>
+            </button>
+
+            <button mat-icon-button class="remove" aria-label="Remove product type"
+                (click)="productTypeForm.clear; addMode = false">
+                <mat-icon>delete</mat-icon>
+            </button>
+        </div>
+    </form>
+</div>
+
+<div *ngIf="!addMode" class="row-margins">
+    <div *ngFor="let item of items" class="row-list" style="font-size: 14px">
+        <div class="row-item" style="color: #673ab7; font-weight: 500">
+            {{item.name}}
+        </div>
+
+        <div class="row-item">
+            {{item.code}}
+        </div>
+
+        <div class="row-item">
+            {{item.description || '--'}} 
+        </div>
+
+        <div class="row-action" style="padding-top: 0; margin-top: -10px">
+            <button mat-icon-button class="edit" aria-label="Edit product type">
+                <mat-icon>edit</mat-icon>
+            </button>
+
+            <button mat-icon-button class="remove" aria-label="Remove product type"
+                (click)="deleteItem(item._id)">
+                <mat-icon>delete</mat-icon>
+            </button>
+        </div>
+    </div>
+</div>

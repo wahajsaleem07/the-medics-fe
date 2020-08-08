@@ -1,0 +1,108 @@
+<div layout="row" class="sub-header">
+    <div>Brand</div>
+    <div style="margin-left: 8px">
+        <button mat-mini-fab color="primary" aria-label=""
+            (click)="addMode = true">
+            <mat-icon>add</mat-icon>
+        </button>
+    </div>
+</div>
+
+<div *ngIf="addMode" class="row-margins">
+    <form [formGroup]="brandForm" (ngSubmit)="onSubmit()" class="">
+        <div style="width: 100%; height: 56px">
+            <div class="row-item">
+                <mat-form-field class="example-full-width field-gutters">
+                    <mat-label>Name</mat-label>
+                    <input matInput formControlName="name" required
+                        [ngClass]="{ 'is-invalid': submitted && f.name.errors }">
+                </mat-form-field>
+                <div *ngIf="submitted && f.name.errors" class="invalid-feedback">
+                    <div *ngIf="f.name.errors.required">Name is required</div>
+                </div>
+            </div>
+    
+            <div class="row-item">
+                <mat-form-field class="example-full-width field-gutters">
+                    <mat-label>Code</mat-label>
+                    <input matInput formControlName="code" required
+                        [ngClass]="{'is-invalid': submitted && f.code.errors }">
+                </mat-form-field>
+                <div *ngIf="submitted && f.code.errors" class="invalid-feedback">
+                    <div *ngIf="f.code.errors.required">Code is required</div>
+                </div>
+            </div>
+    
+            <div class="row-item" style="width: 38%">
+                <mat-form-field class="example-full-width field-gutters">
+                    <mat-label>Address</mat-label>
+                    <input matInput formControlName="address">
+                </mat-form-field>
+            </div>
+        </div>
+
+        <div style="width: 100%; margin-top: 24px; height: 56px; padding-bottom: 24px">
+            <div class="row-item">
+                <mat-form-field class="example-full-width field-gutters">
+                    <mat-label>Registration Number</mat-label>
+                    <input matInput formControlName="registrationNumber">
+                </mat-form-field>
+            </div>
+
+            <div class="row-item">
+                <mat-slide-toggle [checked]="itemStatus" formControlName="status" color="primary"
+                style="margin-top: 12px; margin-left: 8px">
+                    Status
+                </mat-slide-toggle>
+            </div>
+
+        </div>
+
+        <mat-divider></mat-divider>
+
+        <div class="row-action-form" style="margin-top: 24px">
+            <button mat-button class="save" aria-label="Save product origin" style="float: left">
+                <mat-icon>save</mat-icon>
+                SAVE
+            </button>
+
+            <button mat-button class="remove" aria-label="Remove product origin"
+                (click)="productCategoryForm.clear; addMode = false" style="float: left">
+                <mat-icon>delete</mat-icon>
+                REMOVE
+            </button>
+        </div>
+    </form>
+</div>
+
+
+<div *ngIf="!addMode" class="row-margins">
+    <div *ngFor="let item of items" class="row-list" style="font-size: 14px">
+        <div class="col-3 margin-top-4" style="color: #673ab7; font-weight: 500">
+            {{item.name}}
+        </div>
+
+        <div class="col-2 margin-top-4">
+            {{item.code}}
+        </div>
+
+        <div class="col-3 margin-top-4">
+            {{item.address || '--'}} 
+        </div>
+
+        <div class="col-2 margin-top-4" [ngClass]="{ 'save': item.status, 'remove': item.status == 'false' }">
+            {{item.statusValue}} 
+        </div>
+
+        <div class="row-action" style="padding-top: 0; margin-top: -10px">
+            <button mat-icon-button class="edit" aria-label="Edit product origin">
+                <mat-icon>edit</mat-icon>
+            </button>
+
+            <button mat-icon-button class="remove" aria-label="Remove product origin"
+                (click)="deleteItem(item._id)">
+                <mat-icon>delete</mat-icon>
+            </button>
+        </div>
+    </div>
+</div>
